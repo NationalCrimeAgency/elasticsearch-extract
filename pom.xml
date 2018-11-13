@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>uk.gov.nca.elasticsearch</groupId>
+  <artifactId>extract</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>Elasticsearch "Extract" Ingest Processor</name>
+  <description>Extract information from documents using the Annot8 framework</description>
+  <url>https://github.com/NationalCrimeAgency/elasticsearch-extract</url>
+
+  <licenses>
+    <license>
+      <name>Apache Software License v2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>James Baker</name>
+    </developer>
+  </developers>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <scm>
+    <connection>scm:git:git://github.com/NationalCrimeAgency/elasticsearch-extract.git</connection>
+    <developerConnection>scm:git:git@github.com:NationalCrimeAgency/elasticsearch-extract.git</developerConnection>
+    <url>https://github.com/NationalCrimeAgency/elasticsearch-extract</url>
+  </scm>
+
+  <repositories>
+    <repository>
+      <id>packagecloud-annot8</id>
+      <url>https://packagecloud.io/committed/annot8/maven2</url>
+      <releases>
+        <!-- Don't look for releases, use Central -->
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <properties>
+    <annot8.version>0.2.0-SNAPSHOT</annot8.version>
+    <elasticsearch.version>6.4.3</elasticsearch.version>
+    <jackson.version>2.8.11</jackson.version>
+
+    <maven.compiler.source>9</maven.compiler.source>
+    <maven.compiler.target>9</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.elasticsearch</groupId>
+      <artifactId>elasticsearch</artifactId>
+      <version>${elasticsearch.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.annot8</groupId>
+      <artifactId>annot8-common-implementations</artifactId>
+      <version>${annot8.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.annot8</groupId>
+      <artifactId>annot8-default-impl</artifactId>
+      <version>${annot8.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.annot8</groupId>
+      <artifactId>annot8-components-cyber</artifactId>
+      <version>${annot8.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.elasticsearch.test</groupId>
+      <artifactId>framework</artifactId>
+      <version>${elasticsearch.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <artifactSet>
+                <includes>
+                  <include>io.annot8:*</include>
+                  <include>io.micrometer:*</include>
+                  <include>org.slf4j:*</include>
+                  <include>com.google:*</include>
+                  <include>com.fasterxml.jackson.core:*</include>
+                </includes>
+                <excludes>
+                  <exclude>com.fasterxml.jackson.core:jackson-core</exclude>
+                </excludes>
+              </artifactSet>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <appendAssemblyId>false</appendAssemblyId>
+              <descriptors>
+                <descriptor>src/main/assembly/plugin-zip.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
