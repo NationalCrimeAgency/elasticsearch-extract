@@ -122,3 +122,9 @@ To configure a processor, you need to provide the following:
 | --- | --- | ---  |
 | class | String | The fully qualified class of the processor you wish to include. |
 | settings | Map | A JSON object representing the settings for the processor. If not provided, an EmptySettings object is used. |
+
+## Additional Components
+
+To include additional Annot8 components (only the `annot8-components-cyber` package is included by default),
+you need to include the additional Annot8 components on the classpath.
+The easiest way to do this is place them in the `lib` directory of the Elasticsearch installation.
