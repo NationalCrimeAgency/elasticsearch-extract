@@ -122,6 +122,3 @@ To configure a processor, you need to provide the following:
 | --- | --- | ---  |
 | class | String | The fully qualified class of the processor you wish to include. |
 | settings | Map | A JSON object representing the settings for the processor. If not provided, an EmptySettings object is used. |
-
-At present, parsing of the `settings` object is fairly naive and will only support very simple
-configurations. This is an area that needs substantial improvement.

@@ -21,6 +21,9 @@ import static org.elasticsearch.ingest.ConfigurationUtils.readList;
 import static org.elasticsearch.ingest.ConfigurationUtils.readStringProperty;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import io.annot8.common.implementations.context.SimpleContext;
 import io.annot8.common.implementations.data.BaseItemFactory;
 import io.annot8.common.implementations.data.WrappingBaseItemToItem;
@@ -90,7 +93,10 @@ public class ExtractProcessor extends AbstractProcessor {
 
   private final ItemFactory itemFactory;
 
-  private static final ObjectMapper objectMapper = new ObjectMapper();
+  private static final ObjectMapper objectMapper = new ObjectMapper()
+      .registerModule(new JavaTimeModule())
+      .registerModule(new Jdk8Module())
+      .registerModule(new ParameterNamesModule());
 
   /**
    * Create a new instance of the ExtractProcessor with the specified tag and settings.
