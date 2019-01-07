@@ -55,7 +55,7 @@
   <properties>
     <annot8.version>0.2.0-SNAPSHOT</annot8.version>
     <elasticsearch.version>6.4.3</elasticsearch.version>
-    <jackson.version>2.8.10</jackson.version>
+    <jackson.version>2.8.11</jackson.version>
 
     <maven.compiler.source>9</maven.compiler.source>
     <maven.compiler.target>9</maven.compiler.target>
